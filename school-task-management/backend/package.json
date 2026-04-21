@@ -2,11 +2,11 @@
   "name": "school-task-management-backend",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/server.js",
+  "main": "dist/app.js",
   "scripts": {
-    "dev": "ts-node src/server.ts",
+    "dev": "ts-node src/app.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/app.js",
     "migrate": "sequelize-cli db:migrate"
   },
   "dependencies": {
