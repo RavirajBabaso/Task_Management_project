@@ -20,8 +20,13 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const requestUrl = error.config?.url ?? '';
+    const isAuthRequest =
+      requestUrl.includes('/auth/login') || requestUrl.includes('/auth/refresh-token');
+
+    if (error.response?.status === 401 && !isAuthRequest) {
       store.dispatch(logout());
+      localStorage.removeItem('refreshToken');
       window.location.assign('/login');
     }
 

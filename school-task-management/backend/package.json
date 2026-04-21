@@ -4,11 +4,11 @@
   "private": true,
   "main": "dist/app.js",
   "scripts": {
-    "dev": "ts-node src/app.ts",
+    "dev": "ts-node --files src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
     "migrate": "sequelize-cli db:migrate",
-    "seed:admin": "ts-node seeders/adminSeed.ts"
+    "seed:admin": "ts-node --files seeders/adminSeed.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
