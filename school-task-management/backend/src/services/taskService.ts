@@ -11,6 +11,7 @@ import {
   TaskStatus,
   User
 } from '../models';
+import { emitToUser } from '../config/socket';
 
 export interface TaskFilterOptions {
   assigned_to?: number;
@@ -90,13 +91,24 @@ const createNotification = async (
   message: string,
   taskId: number
 ) => {
-  await Notification.create({
+  const notification = await Notification.create({
     user_id: userId,
     type,
     message,
     task_id: taskId,
     is_read: false
   } as Notification);
+
+  // Emit real-time notification
+  emitToUser(userId, 'notification:new', {
+    id: notification.id,
+    type,
+    message,
+    task_id: taskId,
+    created_at: notification.created_at,
+  });
+
+  return notification;
 };
 
 const buildWhereClause = (filters: TaskFilterOptions) => {

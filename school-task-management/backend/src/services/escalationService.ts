@@ -49,7 +49,7 @@ export const escalateDelayedTasks = async () => {
       old_status: 'DELAYED',
       new_status: 'ESCALATED',
       comment: 'Automatically escalated due to prolonged delay',
-    });
+    } as any);
 
     // Create notification for Chairman
     await Notification.create({
@@ -57,7 +57,7 @@ export const escalateDelayedTasks = async () => {
       type: 'TASK_ESCALATED',
       message: `Task "${task.title}" has been escalated`,
       task_id: task.id,
-    });
+    } as any);
 
     // Emit socket event to Chairman
     emitToUser(chairman.id, 'task:escalated', {

@@ -9,6 +9,9 @@ import { env } from './config/env';
 import { initSocket } from './config/socket';
 import { errorHandler } from './middleware/error.middleware';
 import routes from './routes';
+import delayAlertJob from './jobs/delayAlertJob';
+import dailyReportJob from './jobs/dailyReportJob';
+import weeklyReportJob from './jobs/weeklyReportJob';
 
 const app = express();
 const server = http.createServer(app);
@@ -45,6 +48,13 @@ const startServer = async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
+
+    // Start cron jobs
+    delayAlertJob.start();
+    dailyReportJob.start();
+    weeklyReportJob.start();
+
+    console.log('Cron jobs started');
 
     server.listen(env.port, () => {
       console.log(`API server running on port ${env.port}`);

@@ -27,7 +27,7 @@ export const checkDelayedTasks = async () => {
       old_status: task.status,
       new_status: 'DELAYED',
       comment: 'Automatically marked as delayed due to overdue due date',
-    });
+    } as any);
 
     // Create notification
     await Notification.create({
@@ -35,7 +35,7 @@ export const checkDelayedTasks = async () => {
       type: 'TASK_DELAYED',
       message: `Task "${task.title}" is now delayed`,
       task_id: task.id,
-    });
+    } as any);
 
     // Emit socket event
     emitToUser(task.assigned_to, 'notification:new', {
