@@ -5,6 +5,7 @@ import Sidebar from '../../components/common/Sidebar';
 import Badge from '../../components/common/Badge';
 import TaskAssignment from './TaskAssignment';
 import TaskMonitoring from './TaskMonitoring';
+import ChairmanOverview from './ChairmanOverview';
 
 function ChairmanPage({
   eyebrow,
@@ -50,13 +51,7 @@ function ChairmanDashboard() {
         <Routes>
           <Route
             index
-            element={
-              <ChairmanPage
-                eyebrow="Chairman"
-                text="Monitor cross-department execution, pending escalations, and approvals from a single shared workspace."
-                title="Chairman Dashboard"
-              />
-            }
+            element={<ChairmanOverview />}
           />
           <Route
             element={<TaskAssignment />}
