@@ -3,6 +3,7 @@ import { DEPARTMENT_HEAD_ROLES, ROLES } from '../constants/roles';
 import ChangePassword from '../pages/auth/ChangePassword';
 import Login from '../pages/auth/Login';
 import ChairmanDashboard from '../pages/chairman/ChairmanDashboard';
+import TaskDetail from '../pages/chairman/TaskDetail';
 import DeptDashboard from '../pages/departments/DeptDashboard';
 import DirectorDashboard from '../pages/director/DirectorDashboard';
 import ProtectedRoute from './ProtectedRoute';
@@ -16,6 +17,7 @@ function AppRouter() {
         <Route element={<ProtectedRoute />}>
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/director/*" element={<DirectorDashboard />} />
+          <Route path="/task/:id" element={<TaskDetail />} />
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={[ROLES.CHAIRMAN]} />}>

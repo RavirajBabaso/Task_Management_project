@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import TaskTable from '../../components/tables/TaskTable';
 import * as reportService from '../../services/reportService';
@@ -24,6 +25,7 @@ const statCards: Array<{ color: string; key: TaskStatus; label: string }> = [
 ];
 
 function TaskMonitoring() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.tasks.tasks);
   const [activeFilter, setActiveFilter] = useState<TaskStatus | 'ALL'>('ALL');
@@ -72,11 +74,18 @@ function TaskMonitoring() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {statCards.map((card) => (
           <article className="rounded-[18px] border border-[#EFF2F6] bg-white p-5" key={card.key}>
-            <span className={['inline-flex rounded-full px-2.5 py-1 text-xs font-semibold', card.color].join(' ')}>
+            <span
+              className={[
+                'inline-flex rounded-full px-2.5 py-1 text-xs font-semibold',
+                card.color
+              ].join(' ')}
+            >
               {card.label}
             </span>
             <p className="mt-4 text-3xl font-semibold text-[#1E293B]">{counts[card.key]}</p>
-            <p className="mt-2 text-sm text-[#8A99B0]">Tasks currently marked {card.label.toLowerCase()}.</p>
+            <p className="mt-2 text-sm text-[#8A99B0]">
+              Tasks currently marked {card.label.toLowerCase()}.
+            </p>
           </article>
         ))}
       </div>
@@ -115,6 +124,7 @@ function TaskMonitoring() {
 
       <TaskTable
         emptyMessage="Once tasks are assigned, the monitoring grid will populate here."
+        onRowClick={(task) => navigate(`/task/${task.id}`)}
         tasks={filteredTasks}
       />
     </section>

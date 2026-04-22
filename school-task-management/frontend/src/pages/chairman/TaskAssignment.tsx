@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/common/Button';
 import Input from '../../components/common/Input';
 import TaskTable from '../../components/tables/TaskTable';
@@ -28,6 +29,7 @@ const initialForm: CreateTaskPayload = {
 };
 
 function TaskAssignment() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const tasks = useAppSelector((state) => state.tasks.tasks);
   const users = useAppSelector((state) => state.users.users);
@@ -183,7 +185,11 @@ function TaskAssignment() {
 
           {error ? <p className="text-sm text-[#C13F3A]">{error}</p> : null}
 
-          <Button className="w-full justify-center" loading={taskQuery.isFetching && tasks.length === 0} type="submit">
+          <Button
+            className="w-full justify-center"
+            loading={taskQuery.isFetching && tasks.length === 0}
+            type="submit"
+          >
             Submit task
           </Button>
         </form>
@@ -221,6 +227,7 @@ function TaskAssignment() {
 
         <TaskTable
           emptyMessage="Newly assigned tasks will appear here."
+          onRowClick={(task) => navigate(`/task/${task.id}`)}
           tasks={filteredTasks.filter((task) => task.status !== 'COMPLETED')}
         />
       </div>

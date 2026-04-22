@@ -24,7 +24,8 @@ const pageTitles: Record<string, string> = {
   '/department/announcements': 'Announcements',
   '/department/my-tasks': 'My Tasks',
   '/department/notifications': 'Notifications',
-  '/director': 'Dashboard'
+  '/director': 'Dashboard',
+  '/task': 'Task Detail'
 };
 
 function getInitials(name?: string) {
@@ -56,7 +57,11 @@ function Navbar({ actions, title }: NavbarProps) {
   const pendingApprovals = useAppSelector(
     (state) => state.tasks.tasks.filter((task) => task.status === 'PENDING').length
   );
-  const resolvedTitle = title ?? pageTitles[location.pathname] ?? 'Dashboard';
+  const resolvedTitle =
+    title ??
+    pageTitles[location.pathname] ??
+    Object.entries(pageTitles).find(([path]) => location.pathname.startsWith(path))?.[1] ??
+    'Dashboard';
   const subtitleParts = [
     formatNavbarDate(),
     user?.departmentName ?? (user ? ROLE_LABELS[user.role] : 'All Departments')
