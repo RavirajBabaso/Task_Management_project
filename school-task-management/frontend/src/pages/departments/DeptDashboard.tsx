@@ -4,6 +4,7 @@ import Navbar from '../../components/common/Navbar';
 import Sidebar from '../../components/common/Sidebar';
 import Badge from '../../components/common/Badge';
 import AssignedTasks from './AssignedTasks';
+import DeptOverview from './DeptOverview';
 
 function DepartmentPage({
   text,
@@ -44,12 +45,7 @@ function DeptDashboard() {
         <Routes>
           <Route
             index
-            element={
-              <DepartmentPage
-                text="Manage assigned work, progress updates, and day-to-day departmental execution from one place."
-                title="Department Dashboard"
-              />
-            }
+            element={<DeptOverview />}
           />
           <Route
             element={<AssignedTasks />}
