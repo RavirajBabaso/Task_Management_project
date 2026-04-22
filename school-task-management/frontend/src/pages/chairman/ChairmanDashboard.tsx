@@ -1,30 +1,141 @@
-import { ROLE_LABELS, ROLES } from '../../constants/roles';
+import { Route, Routes } from 'react-router-dom';
+import Navbar from '../../components/common/Navbar';
+import Sidebar from '../../components/common/Sidebar';
+import Badge from '../../components/common/Badge';
+
+function ChairmanPage({
+  eyebrow,
+  text,
+  title
+}: {
+  eyebrow: string;
+  text: string;
+  title: string;
+}) {
+  return (
+    <section className="space-y-5 p-5">
+      <div className="rounded-[20px] border border-[#EFF2F6] bg-white p-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#185FA5]">
+          {eyebrow}
+        </p>
+        <h2 className="mt-2 text-2xl font-semibold text-[#1E293B]">{title}</h2>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#5B6E8C]">{text}</p>
+      </div>
+      <div className="grid gap-5 md:grid-cols-3">
+        {['Operational visibility', 'Action queue', 'Department pulse'].map((item, index) => (
+          <article className="rounded-[18px] border border-[#EFF2F6] bg-white p-5" key={item}>
+            <Badge variant={index === 1 ? 'amber' : 'blue'}>{item}</Badge>
+            <p className="mt-4 text-lg font-semibold text-[#1E293B]">{item}</p>
+            <p className="mt-2 text-sm leading-6 text-[#5B6E8C]">
+              Shared shell integration is ready for live dashboard widgets and tables.
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 function ChairmanDashboard() {
   return (
-    <main className="min-h-screen bg-[#F1F4F9] text-[#1E293B]">
-      <header className="border-b border-[#EFF2F6] bg-white px-6 py-5">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold uppercase text-[#185FA5]">{ROLE_LABELS[ROLES.CHAIRMAN]}</p>
-            <h1 className="mt-1 text-2xl font-bold">Chairman Dashboard</h1>
-          </div>
-          <div className="rounded-md border border-[#EFF2F6] bg-[#F8F9FC] px-4 py-2 text-sm text-[#5B6E8C]">
-            Executive Overview
-          </div>
-        </div>
-      </header>
-
-      <section className="mx-auto grid max-w-7xl gap-5 px-6 py-6 md:grid-cols-3">
-        {['Task Monitoring', 'Approvals', 'MIS Reports'].map((item) => (
-          <article key={item} className="rounded-lg border border-[#EFF2F6] bg-white p-5">
-            <p className="text-sm text-[#8A99B0]">Workspace</p>
-            <h2 className="mt-2 text-lg font-semibold">{item}</h2>
-            <p className="mt-2 text-sm leading-6 text-[#5B6E8C]">Ready for live school operations data.</p>
-          </article>
-        ))}
-      </section>
-    </main>
+    <div className="flex min-h-screen bg-[#F1F4F9] text-[#1E293B]">
+      <Sidebar />
+      <main className="min-w-0 flex-1">
+        <Navbar />
+        <Routes>
+          <Route
+            index
+            element={
+              <ChairmanPage
+                eyebrow="Chairman"
+                text="Monitor cross-department execution, pending escalations, and approvals from a single shared workspace."
+                title="Chairman Dashboard"
+              />
+            }
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Workflow"
+                text="Create and dispatch tasks with consistent assignment controls and audit-ready state changes."
+                title="Task Assignment"
+              />
+            }
+            path="task-assignment"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Workflow"
+                text="Track live progress, delayed items, and department execution trends."
+                title="Task Monitor"
+              />
+            }
+            path="task-monitor"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Risk"
+                text="Review urgent alerts and escalations surfaced from notifications and workflow events."
+                title="Alerts"
+              />
+            }
+            path="alerts"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Governance"
+                text="Manage decisions that require executive approval and move blockers forward quickly."
+                title="Approvals"
+              />
+            }
+            path="approvals"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Reporting"
+                text="Use MIS reporting views to summarize completion health, delays, and departmental throughput."
+                title="MIS Reports"
+              />
+            }
+            path="reports"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Communication"
+                text="Publish organization-wide updates and keep all departments aligned."
+                title="Announcements"
+              />
+            }
+            path="announcements"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Administration"
+                text="Manage staff access, users, and operational ownership across the system."
+                title="User Management"
+              />
+            }
+            path="users"
+          />
+          <Route
+            element={
+              <ChairmanPage
+                eyebrow="Analytics"
+                text="Review department performance and completion health across institutional workflows."
+                title="Performance"
+              />
+            }
+            path="performance"
+          />
+        </Routes>
+      </main>
+    </div>
   );
 }
 

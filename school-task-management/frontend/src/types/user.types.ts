@@ -17,6 +17,7 @@ export interface AuthUser {
   email: string;
   role: Role;
   department_id: number | null;
+  departmentName?: string;
 }
 
 export interface LoginPayload {

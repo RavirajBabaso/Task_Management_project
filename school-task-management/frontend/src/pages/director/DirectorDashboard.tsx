@@ -1,25 +1,38 @@
+import Navbar from '../../components/common/Navbar';
+import Sidebar from '../../components/common/Sidebar';
+import Badge from '../../components/common/Badge';
+
 function DirectorDashboard() {
   return (
-    <main className="min-h-screen bg-[#F1F4F9] text-[#1E293B]">
-      <header className="border-b border-[#EFF2F6] bg-white px-6 py-5">
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-semibold uppercase text-[#185FA5]">Director</p>
-          <h1 className="mt-1 text-2xl font-bold">Director Dashboard</h1>
-          <p className="mt-2 text-[#5B6E8C]">Track department updates, delayed tasks, and reporting flow.</p>
-        </div>
-      </header>
-
-      <section className="mx-auto grid max-w-7xl gap-5 px-6 py-6 md:grid-cols-2">
-        <article className="rounded-lg border border-[#EFF2F6] bg-white p-5">
-          <h2 className="text-lg font-semibold">Task Updates</h2>
-          <p className="mt-2 text-sm leading-6 text-[#5B6E8C]">Live task activity will appear here.</p>
-        </article>
-        <article className="rounded-lg border border-[#EFF2F6] bg-white p-5">
-          <h2 className="text-lg font-semibold">Department Health</h2>
-          <p className="mt-2 text-sm leading-6 text-[#5B6E8C]">Performance summaries are ready for integration.</p>
-        </article>
-      </section>
-    </main>
+    <div className="flex min-h-screen bg-[#F1F4F9] text-[#1E293B]">
+      <Sidebar />
+      <main className="min-w-0 flex-1">
+        <Navbar />
+        <section className="space-y-5 p-5">
+          <div className="rounded-[20px] border border-[#EFF2F6] bg-white p-6">
+            <Badge variant="blue">Director Overview</Badge>
+            <h2 className="mt-3 text-2xl font-semibold text-[#1E293B]">Director Dashboard</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-[#5B6E8C]">
+              Track department updates, delayed tasks, and reporting flow within the same shared shell used across role-based dashboards.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2">
+            <article className="rounded-[18px] border border-[#EFF2F6] bg-white p-5">
+              <p className="text-lg font-semibold text-[#1E293B]">Task Updates</p>
+              <p className="mt-2 text-sm leading-6 text-[#5B6E8C]">
+                Real-time updates can now sit under the shared top navigation and sidebar system.
+              </p>
+            </article>
+            <article className="rounded-[18px] border border-[#EFF2F6] bg-white p-5">
+              <p className="text-lg font-semibold text-[#1E293B]">Department Health</p>
+              <p className="mt-2 text-sm leading-6 text-[#5B6E8C]">
+                Summary metrics are ready to plug into the standardized dashboard frame.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
