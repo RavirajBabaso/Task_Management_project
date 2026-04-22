@@ -26,6 +26,22 @@ const taskSlice = createSlice({
     setSelectedTask: (state, action: PayloadAction<Task | null>) => {
       state.selectedTask = action.payload;
     },
+    addTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.unshift(action.payload);
+    },
+    upsertTask: (state, action: PayloadAction<Task>) => {
+      const existingIndex = state.tasks.findIndex((task) => task.id === action.payload.id);
+
+      if (existingIndex >= 0) {
+        state.tasks[existingIndex] = action.payload;
+      } else {
+        state.tasks.unshift(action.payload);
+      }
+
+      if (state.selectedTask?.id === action.payload.id) {
+        state.selectedTask = action.payload;
+      }
+    },
     setFilters: (state, action: PayloadAction<TaskFilters>) => {
       state.filters = {
         ...state.filters,
@@ -35,5 +51,5 @@ const taskSlice = createSlice({
   }
 });
 
-export const { setTasks, setSelectedTask, setFilters } = taskSlice.actions;
+export const { setTasks, setSelectedTask, addTask, upsertTask, setFilters } = taskSlice.actions;
 export default taskSlice.reducer;

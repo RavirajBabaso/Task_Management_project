@@ -1,7 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
+import { useSocket } from '../../hooks/useSocket';
 import Navbar from '../../components/common/Navbar';
 import Sidebar from '../../components/common/Sidebar';
 import Badge from '../../components/common/Badge';
+import TaskAssignment from './TaskAssignment';
+import TaskMonitoring from './TaskMonitoring';
 
 function ChairmanPage({
   eyebrow,
@@ -37,6 +40,8 @@ function ChairmanPage({
 }
 
 function ChairmanDashboard() {
+  useSocket();
+
   return (
     <div className="flex min-h-screen bg-[#F1F4F9] text-[#1E293B]">
       <Sidebar />
@@ -54,23 +59,11 @@ function ChairmanDashboard() {
             }
           />
           <Route
-            element={
-              <ChairmanPage
-                eyebrow="Workflow"
-                text="Create and dispatch tasks with consistent assignment controls and audit-ready state changes."
-                title="Task Assignment"
-              />
-            }
+            element={<TaskAssignment />}
             path="task-assignment"
           />
           <Route
-            element={
-              <ChairmanPage
-                eyebrow="Workflow"
-                text="Track live progress, delayed items, and department execution trends."
-                title="Task Monitor"
-              />
-            }
+            element={<TaskMonitoring />}
             path="task-monitor"
           />
           <Route

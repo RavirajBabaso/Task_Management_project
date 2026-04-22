@@ -1,7 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
+import { useSocket } from '../../hooks/useSocket';
 import Navbar from '../../components/common/Navbar';
 import Sidebar from '../../components/common/Sidebar';
 import Badge from '../../components/common/Badge';
+import AssignedTasks from './AssignedTasks';
 
 function DepartmentPage({
   text,
@@ -32,6 +34,8 @@ function DepartmentPage({
 }
 
 function DeptDashboard() {
+  useSocket();
+
   return (
     <div className="flex min-h-screen bg-[#F1F4F9] text-[#1E293B]">
       <Sidebar />
@@ -48,12 +52,7 @@ function DeptDashboard() {
             }
           />
           <Route
-            element={
-              <DepartmentPage
-                text="Review assigned items, due dates, and completion expectations for your team."
-                title="My Tasks"
-              />
-            }
+            element={<AssignedTasks />}
             path="my-tasks"
           />
           <Route
