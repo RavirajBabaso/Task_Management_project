@@ -57,3 +57,7 @@ export const emitToUser = (userId: number, event: string, data: any) => {
     io.to(socketId).emit(event, data);
   }
 };
+
+export const emitToAll = (event: string, data: any) => {
+  io.emit(event, data);
+};

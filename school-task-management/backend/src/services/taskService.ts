@@ -12,6 +12,7 @@ import {
   User
 } from '../models';
 import { emitToUser } from '../config/socket';
+import { sendTaskAssignedEmail } from './emailService';
 
 export interface TaskFilterOptions {
   assigned_to?: number;
@@ -183,6 +184,24 @@ export const createTask = async (data: CreateTaskPayload, createdBy: number) => 
       `New task assigned: ${task.title}`,
       task.id
     );
+
+    // Send email notification (outside transaction for reliability)
+    try {
+      const assignedUser = await User.findByPk(task.assigned_to);
+      const creatorUser = await User.findByPk(createdBy);
+
+      if (assignedUser?.email && creatorUser) {
+        await sendTaskAssignedEmail(
+          assignedUser.email,
+          task.title,
+          task.due_date,
+          creatorUser.name
+        );
+      }
+    } catch (emailError) {
+      console.error('Failed to send task assignment email:', emailError);
+      // Don't fail the task creation if email fails
+    }
 
     return getTaskById(task.id, transaction);
   });

@@ -3,6 +3,7 @@ import { TaskHistory } from '../models/TaskHistory';
 import { Notification } from '../models/Notification';
 import { User } from '../models/User';
 import { emitToUser } from '../config/socket';
+import { sendEscalationEmail } from './emailService';
 import { Op, Sequelize } from 'sequelize';
 
 export const escalateDelayedTasks = async () => {
@@ -65,6 +66,16 @@ export const escalateDelayedTasks = async () => {
       title: task.title,
       assignedTo: task.assigned_to,
     });
+
+    // Send escalation email to Chairman
+    try {
+      if (chairman.email) {
+        const escalationPath = `Task was overdue and not addressed within 24 hours of delay notification`;
+        await sendEscalationEmail(chairman.email, task.title, escalationPath);
+      }
+    } catch (emailError) {
+      console.error('Failed to send escalation email:', emailError);
+    }
   }
 
   console.log(`Escalated ${delayedTasks.length} tasks`);

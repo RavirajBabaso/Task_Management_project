@@ -1,7 +1,9 @@
 import { Task } from '../models/Task';
 import { TaskHistory } from '../models/TaskHistory';
 import { Notification } from '../models/Notification';
+import { User } from '../models/User';
 import { emitToUser } from '../config/socket';
+import { sendDelayAlertEmail } from './emailService';
 import { Op } from 'sequelize';
 
 export const checkDelayedTasks = async () => {
@@ -14,6 +16,13 @@ export const checkDelayedTasks = async () => {
         [Op.lt]: new Date(),
       },
     },
+    include: [
+      {
+        model: User,
+        as: 'assignedTo',
+        attributes: ['id', 'name', 'email'],
+      },
+    ],
   });
 
   for (const task of delayedTasks) {
@@ -44,6 +53,17 @@ export const checkDelayedTasks = async () => {
       message: `Task "${task.title}" is now delayed`,
       task_id: task.id,
     });
+
+    // Send delay alert email
+    try {
+      const assignedUser = task.assignedTo;
+      if (assignedUser?.email) {
+        const daysOverdue = Math.floor((Date.now() - task.due_date.getTime()) / (1000 * 60 * 60 * 24));
+        await sendDelayAlertEmail(assignedUser.email, task.title, daysOverdue);
+      }
+    } catch (emailError) {
+      console.error('Failed to send delay alert email:', emailError);
+    }
   }
 
   console.log(`Checked and updated ${delayedTasks.length} delayed tasks`);
