@@ -25,6 +25,7 @@ const pageTitles: Record<string, string> = {
   '/department/my-tasks': 'My Tasks',
   '/department/notifications': 'Notifications',
   '/director': 'Dashboard',
+  '/notifications': 'Notifications',
   '/task': 'Task Detail'
 };
 

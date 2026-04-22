@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { io } from 'socket.io-client';
+import toast from 'react-hot-toast';
 import { addNotification } from '../store/notificationSlice';
-import { upsertTask } from '../store/taskSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import type { Notification } from '../types/notification.types';
+import type { Announcement, Notification } from '../types/notification.types';
 import type { Task } from '../types/task.types';
 
 interface SocketTaskPayload {
@@ -18,9 +19,23 @@ const resolveTaskPayload = (payload: SocketTaskPayload | Task) => {
   return payload.task;
 };
 
+const normalizeAnnouncementNotification = (
+  announcement: Announcement,
+  userId: number | undefined
+): Notification => ({
+  id: announcement.id,
+  user_id: userId ?? 0,
+  type: 'ANNOUNCEMENT',
+  message: announcement.message,
+  task_id: null,
+  is_read: false,
+  created_at: announcement.created_at
+});
+
 export const useSocket = () => {
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.auth.token);
+  const queryClient = useQueryClient();
+  const { token, user } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (!token) {
@@ -36,26 +51,25 @@ export const useSocket = () => {
       transports: ['websocket']
     });
 
+    socket.on('notification:new', (notification: Notification) => {
+      dispatch(addNotification(notification));
+      toast.success(notification.message);
+    });
+
     socket.on('task:updated', (payload: SocketTaskPayload | Task) => {
       const task = resolveTaskPayload(payload);
       if (task) {
-        dispatch(upsertTask(task));
+        void queryClient.invalidateQueries({ queryKey: ['tasks'] });
+        void queryClient.invalidateQueries({ queryKey: ['task', task.id] });
       }
     });
 
-    socket.on('task:assigned', (payload: SocketTaskPayload | Task) => {
-      const task = resolveTaskPayload(payload);
-      if (task) {
-        dispatch(upsertTask(task));
-      }
-    });
-
-    socket.on('notification:new', (notification: Notification) => {
-      dispatch(addNotification(notification));
+    socket.on('announcement:new', (announcement: Announcement) => {
+      dispatch(addNotification(normalizeAnnouncementNotification(announcement, user?.id)));
     });
 
     return () => {
       socket.disconnect();
     };
-  }, [dispatch, token]);
+  }, [dispatch, queryClient, token, user?.id]);
 };

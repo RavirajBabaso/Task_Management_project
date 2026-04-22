@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { useSocket } from '../../hooks/useSocket';
+import Announcements from './Announcements';
 import Navbar from '../../components/common/Navbar';
 import Sidebar from '../../components/common/Sidebar';
 import Badge from '../../components/common/Badge';
@@ -61,12 +62,7 @@ function DeptDashboard() {
             path="notifications"
           />
           <Route
-            element={
-              <DepartmentPage
-                text="Read targeted announcements and institution-wide communication updates."
-                title="Announcements"
-              />
-            }
+            element={<Announcements />}
             path="announcements"
           />
         </Routes>

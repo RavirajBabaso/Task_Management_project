@@ -14,11 +14,13 @@ export const getNotifications = async () => {
 };
 
 export const markAsRead = async (id: number) => {
-  const response = await api.post<ApiResponse<Notification>>(API_ENDPOINTS.notifications.markRead(id));
+  const response = await api.put<ApiResponse<Notification | null>>(
+    API_ENDPOINTS.notifications.markRead(id)
+  );
   return response.data.data;
 };
 
 export const markAllRead = async () => {
-  const response = await api.post<ApiResponse<null>>(API_ENDPOINTS.notifications.markAllRead);
+  const response = await api.put<ApiResponse<null>>(API_ENDPOINTS.notifications.markAllRead);
   return response.data.data;
 };

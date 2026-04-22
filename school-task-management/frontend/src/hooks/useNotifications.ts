@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import * as notificationService from '../services/notificationService';
-import { markAsRead as markAsReadAction, setNotifications } from '../store/notificationSlice';
+import {
+  markAllRead as markAllReadAction,
+  markAsRead as markAsReadAction,
+  setNotifications
+} from '../store/notificationSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 export const useNotifications = () => {
@@ -25,10 +29,16 @@ export const useNotifications = () => {
     dispatch(markAsReadAction(id));
   };
 
+  const markAllAsRead = async () => {
+    await notificationService.markAllRead();
+    dispatch(markAllReadAction());
+  };
+
   return {
     notifications,
     unreadCount,
     markAsRead,
+    markAllAsRead,
     ...query
   };
 };

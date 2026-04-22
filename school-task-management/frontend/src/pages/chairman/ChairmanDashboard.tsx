@@ -3,6 +3,8 @@ import { useSocket } from '../../hooks/useSocket';
 import Navbar from '../../components/common/Navbar';
 import Sidebar from '../../components/common/Sidebar';
 import Badge from '../../components/common/Badge';
+import AlertsEscalations from './AlertsEscalations';
+import AnnouncementsPage from './AnnouncementsPage';
 import TaskAssignment from './TaskAssignment';
 import TaskMonitoring from './TaskMonitoring';
 import ChairmanOverview from './ChairmanOverview';
@@ -62,13 +64,7 @@ function ChairmanDashboard() {
             path="task-monitor"
           />
           <Route
-            element={
-              <ChairmanPage
-                eyebrow="Risk"
-                text="Review urgent alerts and escalations surfaced from notifications and workflow events."
-                title="Alerts"
-              />
-            }
+            element={<AlertsEscalations />}
             path="alerts"
           />
           <Route
@@ -92,13 +88,7 @@ function ChairmanDashboard() {
             path="reports"
           />
           <Route
-            element={
-              <ChairmanPage
-                eyebrow="Communication"
-                text="Publish organization-wide updates and keep all departments aligned."
-                title="Announcements"
-              />
-            }
+            element={<AnnouncementsPage />}
             path="announcements"
           />
           <Route

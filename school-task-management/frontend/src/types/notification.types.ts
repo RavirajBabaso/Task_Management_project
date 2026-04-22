@@ -24,4 +24,19 @@ export interface Announcement {
   message: string;
   department_id: number | null;
   created_at: string;
+  creator?: {
+    id: number;
+    name: string;
+  };
+  department?: {
+    id: number;
+    name: string;
+    description?: string | null;
+  };
+}
+
+export interface CreateAnnouncementPayload {
+  message: string;
+  target: AnnouncementTarget;
+  department_id?: number;
 }

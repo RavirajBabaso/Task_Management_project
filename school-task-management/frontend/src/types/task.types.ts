@@ -75,7 +75,7 @@ export interface UpdateTaskPayload {
 }
 
 export interface TaskFilters {
-  status?: TaskStatus | 'ALL';
+  status?: TaskStatus | 'ALL' | `${TaskStatus},${TaskStatus}` | string;
   priority?: TaskPriority | 'ALL';
   department_id?: number | null;
   assigned_to?: number | null;
