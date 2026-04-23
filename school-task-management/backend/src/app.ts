@@ -1,4 +1,5 @@
 import http from 'http';
+import path from 'path';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
@@ -25,6 +26,10 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  '/api/files/reports',
+  express.static(path.resolve(process.cwd(), 'uploads', 'reports'))
+);
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
