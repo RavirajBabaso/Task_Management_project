@@ -10,8 +10,6 @@ const delayAlertJob = cron.schedule('0 0 * * *', async () => {
   } catch (error) {
     console.error('Error in delay alert job:', error);
   }
-}, {
-  scheduled: false, // Don't start automatically
 });
 
 export default delayAlertJob;

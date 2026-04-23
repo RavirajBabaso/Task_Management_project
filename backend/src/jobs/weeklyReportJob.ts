@@ -8,8 +8,6 @@ const weeklyReportJob = cron.schedule('0 7 * * 1', async () => {
   } catch (error) {
     console.error('Error in weekly report job:', error);
   }
-}, {
-  scheduled: false, // Don't start automatically
 });
 
 export default weeklyReportJob;

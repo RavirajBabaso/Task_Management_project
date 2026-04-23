@@ -1,10 +1,19 @@
-import { Server as SocketServer } from 'socket.io';
+import { Server as HttpServer } from 'http';
+import { Server } from 'socket.io';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/User';
 
+export let io: Server;
 const userSockets = new Map<number, string>();
 
-export const initializeSocket = (io: SocketServer) => {
+export const initSocket = (server: HttpServer) => {
+  io = new Server(server, {
+    cors: {
+      origin: process.env.FRONTEND_URL ?? 'http://localhost:3000',
+      credentials: true
+    }
+  });
+
   io.use(async (socket, next) => {
     try {
       const token = socket.handshake.auth.token;
@@ -37,12 +46,17 @@ export const initializeSocket = (io: SocketServer) => {
       console.log(`User ${userId} disconnected`);
     });
   });
+
+  return io;
 };
 
 export const emitToUser = (userId: number, event: string, data: any) => {
   const socketId = userSockets.get(userId);
   if (socketId) {
-    const io = require('../app').io; // Assuming io is exported from app.ts
     io.to(socketId).emit(event, data);
   }
+};
+
+export const emitToAll = (event: string, data: any) => {
+  io.emit(event, data);
 };

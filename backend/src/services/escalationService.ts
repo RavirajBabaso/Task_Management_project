@@ -2,7 +2,7 @@ import { Task } from '../models/Task';
 import { TaskHistory } from '../models/TaskHistory';
 import { Notification } from '../models/Notification';
 import { User } from '../models/User';
-import { emitToUser } from '../config/socket';
+import { emitToUser } from '../config/sockets';
 import { Op, Sequelize } from 'sequelize';
 
 export const escalateDelayedTasks = async () => {
@@ -49,7 +49,7 @@ export const escalateDelayedTasks = async () => {
       old_status: 'DELAYED',
       new_status: 'ESCALATED',
       comment: 'Automatically escalated due to prolonged delay',
-    });
+    } as TaskHistory);
 
     // Create notification for Chairman
     await Notification.create({
@@ -57,7 +57,7 @@ export const escalateDelayedTasks = async () => {
       type: 'TASK_ESCALATED',
       message: `Task "${task.title}" has been escalated`,
       task_id: task.id,
-    });
+    } as Notification);
 
     // Emit socket event to Chairman
     emitToUser(chairman.id, 'task:escalated', {

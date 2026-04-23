@@ -1,7 +1,8 @@
 import { Task } from '../models/Task';
 import { TaskHistory } from '../models/TaskHistory';
 import { Notification } from '../models/Notification';
-import { emitToUser } from '../config/socket';
+import { TaskStatus } from '../models/enums';
+import { emitToUser } from '../config/sockets';
 
 export const createTask = async (taskData: any, assignedBy: number) => {
   const task = await Task.create({
@@ -16,7 +17,7 @@ export const createTask = async (taskData: any, assignedBy: number) => {
     type: 'TASK_ASSIGNED',
     message: `New task assigned: ${task.title}`,
     task_id: task.id,
-  });
+  } as Notification);
 
   // Emit socket event
   emitToUser(task.assigned_to, 'notification:new', {
@@ -29,7 +30,7 @@ export const createTask = async (taskData: any, assignedBy: number) => {
   return task;
 };
 
-export const updateTaskStatus = async (taskId: number, newStatus: string, updatedBy: number, comment?: string) => {
+export const updateTaskStatus = async (taskId: number, newStatus: TaskStatus, updatedBy: number, comment?: string) => {
   const task = await Task.findByPk(taskId);
   if (!task) throw new Error('Task not found');
 
@@ -44,7 +45,7 @@ export const updateTaskStatus = async (taskId: number, newStatus: string, update
     old_status: oldStatus,
     new_status: newStatus,
     comment,
-  });
+  } as TaskHistory);
 
   // Create notification for assignee
   await Notification.create({
@@ -52,7 +53,7 @@ export const updateTaskStatus = async (taskId: number, newStatus: string, update
     type: 'TASK_UPDATED',
     message: `Task "${task.title}" status updated to ${newStatus}`,
     task_id: task.id,
-  });
+  } as Notification);
 
   // Emit socket event
   emitToUser(task.assigned_to, 'notification:new', {

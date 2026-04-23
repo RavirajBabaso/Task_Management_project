@@ -1,7 +1,7 @@
 import { Task } from '../models/Task';
 import { TaskHistory } from '../models/TaskHistory';
 import { Notification } from '../models/Notification';
-import { emitToUser } from '../config/socket';
+import { emitToUser } from '../config/sockets';
 import { Op } from 'sequelize';
 
 export const checkDelayedTasks = async () => {
@@ -27,7 +27,7 @@ export const checkDelayedTasks = async () => {
       old_status: task.status,
       new_status: 'DELAYED',
       comment: 'Automatically marked as delayed due to overdue due date',
-    });
+    } as TaskHistory);
 
     // Create notification
     await Notification.create({
@@ -35,7 +35,7 @@ export const checkDelayedTasks = async () => {
       type: 'TASK_DELAYED',
       message: `Task "${task.title}" is now delayed`,
       task_id: task.id,
-    });
+    } as Notification);
 
     // Emit socket event
     emitToUser(task.assigned_to, 'notification:new', {

@@ -8,8 +8,6 @@ const dailyReportJob = cron.schedule('0 6 * * *', async () => {
   } catch (error) {
     console.error('Error in daily report job:', error);
   }
-}, {
-  scheduled: false, // Don't start automatically
 });
 
 export default dailyReportJob;
