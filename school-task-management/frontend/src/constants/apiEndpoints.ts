@@ -26,7 +26,9 @@ export const API_ENDPOINTS = {
     daily: '/reports/daily',
     weekly: '/reports/weekly',
     monthly: '/reports/monthly',
-    export: '/reports/export'
+    export: '/reports/export',
+    history: '/reports/history',
+    download: (id: number, format: 'pdf' | 'excel') => `/reports/download/${id}/${format}`
   },
   notifications: {
     list: '/notifications',
@@ -38,7 +40,8 @@ export const API_ENDPOINTS = {
     detail: (id: number | string) => `/approvals/${id}`,
     create: '/approvals',
     approve: (id: number | string) => `/approvals/${id}/approve`,
-    reject: (id: number | string) => `/approvals/${id}/reject`
+    reject: (id: number | string) => `/approvals/${id}/reject`,
+    process: (id: number | string) => `/approvals/${id}/process`
   },
   announcements: {
     list: '/announcements',
@@ -49,6 +52,8 @@ export const API_ENDPOINTS = {
     chairman: '/dashboard/chairman',
     director: '/dashboard/director',
     department: '/dashboard/department',
-    metrics: '/dashboard/metrics'
+    metrics: '/dashboard/metrics',
+    performance: '/dashboard/performance',
+    monthlyComparison: '/dashboard/monthly-comparison'
   }
 } as const;
