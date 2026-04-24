@@ -18,5 +18,5 @@
     "types": ["vite/client"]
   },
   "include": ["src", "App.tsx", "main.tsx", "vite.config.ts"],
-  "references": []
+  "exclude": ["node_modules", "dist", "src/__tests__/**", "**/*.test.tsx", "**/*.spec.tsx"]
 }

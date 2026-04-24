@@ -4,6 +4,8 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import compression from 'compression';
+import morgan from 'morgan';
 import './config/redis';
 import { sequelize } from './config/database';
 import { env } from './config/env';
@@ -17,7 +19,18 @@ import weeklyReportJob from './jobs/weeklyReportJob';
 const app = express();
 const server = http.createServer(app);
 
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  },
+}));
+app.use(compression());
+app.use(morgan('combined'));
 app.use(
   cors({
     origin: process.env.FRONTEND_URL ?? env.frontendUrl,
@@ -38,6 +51,14 @@ app.use(
 );
 
 app.use('/api', routes);
+
+// Serve static files from the React build
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Catch-all route for client-side routing
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 app.use((_req: Request, _res: Response, next: NextFunction) => {
   const error = new Error('Route not found') as Error & { statusCode?: number };
