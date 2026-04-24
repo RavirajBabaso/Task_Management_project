@@ -12,7 +12,8 @@
     "test:integration": "jest --config jest.integration.config.js --testPathPattern=integration",
     "migrate": "sequelize-cli db:migrate",
     "seed:admin": "ts-node --files seeders/adminSeed.ts",
-    "seed:production": "ts-node --files seeders/productionSeed.ts"
+    "seed:production": "ts-node --files seeders/productionSeed.ts",
+    "seed:initial": "ts-node --files seeders/initialDataSeed.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

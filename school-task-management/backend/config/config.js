@@ -11,12 +11,8 @@ module.exports = {
     logging: false
   },
   test: {
-    username: process.env.DB_USER || 'school_user',
-    password: process.env.DB_PASSWORD || 'school_password',
-    database: process.env.DB_NAME || 'school_taskdb_test',
-    host: process.env.DB_HOST || 'localhost',
-    port: Number(process.env.DB_PORT || 3306),
-    dialect: 'mysql',
+    dialect: 'sqlite',
+    storage: ':memory:',
     logging: false
   },
   production: {
