@@ -1,17 +1,6 @@
 import bcrypt from 'bcryptjs';
-import { Sequelize } from 'sequelize-typescript';
-import { Department, User, Task, TaskHistory, Notification, Approval, Announcement, Report } from '../src/models';
-
-// Create a test database instance
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: ':memory:',
-  models: [Department, User, Task, TaskHistory, Notification, Approval, Announcement, Report],
-  define: {
-    freezeTableName: true
-  },
-  logging: false
-});
+import { sequelize } from '../src/config/database';
+import { Department, User, Task, Announcement, Approval } from '../src/models';
 
 const departments = [
   'Chairman Office',

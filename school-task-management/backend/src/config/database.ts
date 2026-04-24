@@ -9,15 +9,14 @@ import {
   TaskHistory,
   User
 } from '../models';
-import { env } from './env';
+
+const config = require('../../config/config.js');
+
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = config[env];
 
 export const sequelize = new Sequelize({
-  dialect: 'mysql',
-  host: env.db.host,
-  port: env.db.port,
-  database: env.db.name,
-  username: env.db.user,
-  password: env.db.password,
+  ...dbConfig,
   models: [Department, User, Task, TaskHistory, Notification, Approval, Announcement, Report],
   define: {
     freezeTableName: true
